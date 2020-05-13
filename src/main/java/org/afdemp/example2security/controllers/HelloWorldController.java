@@ -33,6 +33,12 @@ public class HelloWorldController {
 		model.addAttribute("user", getPrincipal());
 		return "dba";
 	}
+        
+        @RequestMapping(value = "/secdb", method = RequestMethod.GET)
+	public String secureDbaPage(ModelMap model) {
+		model.addAttribute("user", getPrincipal());
+		return "securedba";
+	}
 
 	@RequestMapping(value="/logout", method = RequestMethod.GET)
 	   public String logoutPage (HttpServletRequest request, HttpServletResponse response) {

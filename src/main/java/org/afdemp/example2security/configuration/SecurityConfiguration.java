@@ -16,16 +16,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		auth.inMemoryAuthentication().withUser("bill").password("{noop}abc123").roles("USER");
 		auth.inMemoryAuthentication().withUser("admin").password("{noop}root123").roles("ADMIN");
 		auth.inMemoryAuthentication().withUser("dba").password("{noop}root123").roles("ADMIN","DBA");
+		auth.inMemoryAuthentication().withUser("auser").password("{noop}1234").roles("AUTH_USER");
 	}
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
  
-	  http.authorizeRequests()
+	  http.authorizeRequests() 
 	  	.antMatchers("/", "/home").permitAll() 
 		.antMatchers("/admin/**").access("hasRole('ADMIN')")
 		.antMatchers("/db/**").access("hasRole('ADMIN') and hasRole('DBA')")
-		.and().formLogin()
+		.antMatchers("/secdb").access("hasRole('AUTH_USER') or hasRole('DBA')")
+                .and().formLogin()
 		.and().exceptionHandling().accessDeniedPage("/Access_Denied");
  
 	}
